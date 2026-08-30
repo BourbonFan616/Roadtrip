@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Bourbon, Backroads & Bad Decisions</title>
+
+  <style>
+    :root {
+      --bg: #111111;
+      --bg-light: #1b1b1b;
+      --panel: #201b17;
+      --amber: #d88a2d;
+      --gold: #f0b45c;
+      --cream: #f3eadb;
+      --muted: #b7aa9a;
+      --border: #4a3828;
+      --danger: #9e3b2f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Georgia, "Times New Roman", serif;
+      background:
+        linear-gradient(rgba(17, 17, 17, 0.94), rgba(17, 17, 17, 0.96)),
+        repeating-linear-gradient(
+          90deg,
+          #1a1410 0px,
+          #1a1410 40px,
+          #211811 40px,
+          #211811 80px
+        );
+      color: var(--cream);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: white;
+    }
+
+    .topbar {
+      background: #090909;
+      border-bottom: 2px solid var(--amber);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px;
+    }
+
+    nav a {
+      padding: 8px 14px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    nav a:hover {
+      border-color: var(--amber);
+      background: #1c1712;
+    }
+
+    header {
+      min-height: 88vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 20px;
+      border-bottom: 3px solid var(--border);
+    }
+
+    .hero {
+      max-width: 950px;
+    }
+
+    .road-sign {
+      display: inline-block;
+      background: #2b2119;
+      border: 4px solid var(--cream);
+      outline: 3px solid #2b2119;
+      padding: 12px 24px;
+      margin-bottom: 25px;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      transform: rotate(-1deg);
+    }
+
+    h1 {
+      font-size: clamp(3rem, 8vw, 6rem);
+      line-height: 0.95;
+      margin-bottom: 22px;
+      color: var(--gold);
+      text-shadow:
+        3px 3px 0 #4b2d12,
+        6px 6px 0 #000;
+    }
+
+    .subtitle {
+      font-family: Arial, sans-serif;
+      font-size: clamp(1.1rem, 3vw, 1.6rem);
+      color: var(--cream);
+      margin-bottom: 30px;
+    }
+
+    .warning {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 16px;
+      background: var(--danger);
+      border: 2px solid #c96d55;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      text-transform: uppercase;
+      transform: rotate(1deg);
+    }
+
+    .countdown-section {
+      margin-top: 28px;
+    }
+
+    .countdown-label {
+      font-family: Arial, sans-serif;
+      color: var(--amber);
+      font-size: 0.85rem;
+      font-weight: bold;
+      letter-spacing: 3px;
+      margin-bottom: 12px;
+    }
+
+    #countdown {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .countdown-box {
+      background: #181512;
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--amber);
+      min-width: 105px;
+      padding: 15px 18px;
+      text-align: center;
+    }
+
+    .countdown-box strong {
+      display: block;
+      color: var(--gold);
+      font-family: Arial, sans-serif;
+      font-size: 2.2rem;
+      line-height: 1;
+    }
+
+    .countdown-box span {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 50px 20px;
+    }
+
+    section {
+      margin-bottom: 70px;
+    }
+
+    h2 {
+      font-size: 2.3rem;
+      color: var(--gold);
+      margin-bottom: 20px;
+      border-bottom: 2px solid var(--amber);
+      padding-bottom: 8px;
+    }
+
+    .intro {
+      font-size: 1.2rem;
+      max-width: 800px;
+      color: #e4d9cb;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+      margin-top: 25px;
+    }
+
+    .card {
+      background: linear-gradient(145deg, #251e18, #181512);
+      border: 1px solid var(--border);
+      border-top: 4px solid var(--amber);
+      padding: 22px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.3);
+    }
+
+    .card h3 {
+      color: var(--gold);
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+    }
+
+    .crew-title {
+      font-family: Arial, sans-serif;
+      color: var(--amber);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: -6px;
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      color: var(--muted);
+    }
+
+    .day {
+      margin-top: 30px;
+      border-left: 4px solid var(--amber);
+      background: rgba(30, 25, 20, 0.8);
+      padding: 24px 28px;
+    }
+
+    .day h3 {
+      color: var(--gold);
+      margin-bottom: 4px;
+      font-size: 1.55rem;
+    }
+
+    .day-date {
+      font-family: Arial, sans-serif;
+      color: var(--muted);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 18px;
+    }
+
+    .day ul {
+      padding-left: 22px;
+    }
+
+    .day li {
+      margin: 10px 0;
+    }
+
+    .day li strong {
+      color: var(--gold);
+      font-family: Arial, sans-serif;
+    }
+
+    .itinerary-stop-image {
+      margin: 16px 0 18px 0;
+    }
+
+    .itinerary-stop-image img {
+      width: 100%;
+      max-width: 650px;
+      height: auto;
+      display: block;
+      border: 2px solid var(--border);
+      border-top: 4px solid var(--amber);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+    }
+
+    .image-caption {
+      max-width: 650px;
+      padding-top: 7px;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .stat {
+      text-align: center;
+      background: #181512;
+      border: 1px solid var(--border);
+      padding: 22px 15px;
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--gold);
+      font-size: 2.1rem;
+      line-height: 1.1;
+    }
+
+    .stat span {
+      font-family: Arial, sans-serif;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 1px;
+    }
+
+    .quote {
+      margin-top: 20px;
+      padding: 22px;
+      background: #191411;
+      border-left: 5px solid var(--gold);
+      font-size: 1.25rem;
+      font-style: italic;
+    }
+
+    .quote span {
+      display: block;
+      font-size: 0.9rem;
+      font-style: normal;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .gallery-placeholder {
+      min-height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed #65503d;
+      background: #171411;
+      color: var(--muted);
+      text-align: center;
+      padding: 30px;
+      margin-top: 20px;
+      font-family: Arial, sans-serif;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      border-top: 2px solid var(--border);
+      background: #090909;
+      color: var(--muted);
+      font-family: Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+
+    .footer-title {
+      color: var(--gold);
+      font-family: Georgia, serif;
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 700px) {
+      header {
+        min-height: 78vh;
+      }
+
+      nav {
+        justify-content: flex-start;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+      }
+
+      h2 {
+        font-size: 1.9rem;
+      }
+
+      .countdown-box {
+        min-width: 75px;
+        padding: 12px 10px;
+      }
+
+      .countdown-box strong {
+        font-size: 1.7rem;
+      }
+
+      .day {
+        padding: 20px;
+      }
+
+      .itinerary-stop-image img {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="topbar">
+    <nav>
+      <a href="#about">The Trip</a>
+      <a href="#crew">The Crew</a>
+      <a href="#itinerary">Itinerary</a>
+      <a href="#bourbon">Bourbon</a>
+      <a href="#stats">Trip Stats</a>
+      <a href="#quotes">Quotes</a>
+      <a href="#photos">Photos</a>
+    </nav>
+  </div>
+
+  <header>
+    <div class="hero">
+
+      <div class="road-sign">Kentucky Bound</div>
+
+      <h1>
+        Bourbon,<br>
+        Backroads<br>
+        &amp; Bad Decisions
+      </h1>
+
+      <p class="subtitle">
+        Four guys. Three days. Too much bourbon.<br>
+        Not enough good judgment.
+      </p>
+
+      <div class="warning">
+        What happens in Kentucky will probably be documented here.
+      </div>
+
+      <div class="countdown-section">
+
+        <div class="countdown-label">
+          THE BAD DECISIONS BEGIN IN
+        </div>
+
+        <div id="countdown">
+
+          <div class="countdown-box">
+            <strong id="days">00</strong>
+            <span>Days</span>
+          </div>
+
+          <div class="countdown-box">
+            <strong id="hours">00</strong>
+            <span>Hours</span>
+          </div>
+
+          <div class="countdown-box">
+            <strong id="minutes">00</strong>
+            <span>Minutes</span>
+          </div>
+
+          <div class="countdown-box">
+            <strong id="seconds">00</strong>
+            <span>Seconds</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <main>
+
+    <section id="about">
+
+      <h2>The Mission</h2>
+
+      <p class="intro">
+        A Kentucky road trip built around bourbon, backroads, barrel warehouses,
+        questionable navigation decisions and the firm belief that scheduling
+        this many distillery stops in one trip was somehow a good idea.
+      </p>
+
+    </section>
+
+    <section id="crew">
+
+      <h2>The Crew</h2>
+
+      <div class="cards">
+
+        <div class="card">
+          <h3>Dan</h3>
+          <h4 class="crew-title">The Mastermind</h4>
+          <p>
+            Trip organizer, bourbon enthusiast and the person most likely to
+            insist that one more distillery will definitely fit into the schedule.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Ryan</h3>
+          <h4 class="crew-title">The Instigator</h4>
+          <p>
+            Chief instigator of the group and most likely to convince Dan that
+            “one more drink” is a perfectly reasonable idea by questioning his
+            courage, manhood, and general commitment to the trip. If Dan says
+            he's had enough, Ryan considers that the opening round of negotiations.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Dave</h3>
+          <h4 class="crew-title">The Bottle Hoarder</h4>
+          <p>
+            Equal-opportunity insult specialist with Ryan and Dan both firmly in
+            his crosshairs. Also the odds-on favorite to completely lose control
+            in a distillery gift shop and return home with more bottles than
+            everyone else combined. Trunk space is merely a suggestion.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3>Brad</h3>
+          <h4 class="crew-title">The Wild Card</h4>
+          <p>
+            “It smells like black in here.”
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section id="itinerary">
+
+      <h2>The Itinerary</h2>
+
+      <div class="day">
+
+        <h3>Day 1 — Hit the Road, Hit the Bourbon</h3>
+
+        <div class="day-date">
+          Thursday, September 3, 2026
+        </div>
+
+        <ul>
+
+          <li>
+            <strong>3:00 AM</strong> — Leave Stevensville, Michigan
+          </li>
+
+          <li>
+            <strong>8:30 AM</strong> — J. Mattingly
+          </li>
+
+          <li>
+            <strong>10:30 AM</strong> — Buffalo Trace Hard Hat Tour
+          </li>
+
+        </ul>
+
+        <div class="itinerary-stop-image">
+          <img
+            src="Buffalo Trace HH Tour.jpg"
+            alt="Buffalo Trace Hard Hat Tour"
+          >
+          <div class="image-caption">
+            Buffalo Trace — Hard Hat Tour
+          </div>
+        </div>
+
+        <ul>
+
+          <li>
+            <strong>12:55 PM</strong> — Glenn's Creek Distilling
+          </li>
+
+          <li>
+            <strong>2:30 PM</strong> — RD1 Barrel Thief &amp; Fill Your Own Mini Bottle
+          </li>
+
+          <li>
+            <strong>4:00 PM</strong> — Dark Arts Barrel Thieving
+          </li>
+
+          <li>
+            <strong>5:30 PM</strong> — James E. Pepper Tasting
+          </li>
+
+          <li>
+            <strong>6:15 PM</strong> — Goodfellas Pizza
+          </li>
+
+        </ul>
+
+      </div>
+
+      <div class="day">
+
+        <h3>Day 2 — Bourbon Country Blitz</h3>
+
+        <div class="day-date">
+          Friday, September 4, 2026
+        </div>
+
+        <ul>
+          <li><strong>9:00 AM</strong> — Buffalo Trace Distillery</li>
+          <li><strong>9:35 AM</strong> — J. Mattingly</li>
+          <li><strong>10:15 AM</strong> — Castle &amp; Key or Whiskey Thief</li>
+          <li><strong>12:00 PM</strong> — Willett Distillery Tour</li>
+          <li><strong>1:45 PM</strong> — Preservation Distillery Tasting</li>
+          <li><strong>2:40 PM</strong> — Heaven Hill</li>
+          <li><strong>3:30 PM</strong> — Bardstown Bourbon Company Barrel Thieving Tour</li>
+          <li><strong>5:00 PM</strong> — Jim Beam</li>
+          <li><strong>Evening</strong> — Old Talbott Tavern</li>
+        </ul>
+
+      </div>
+
+      <div class="day">
+
+        <h3>Day 3 — One Last Push</h3>
+
+        <div class="day-date">
+          Saturday, September 5, 2026
+        </div>
+
+        <ul>
+          <li><strong>8:30 AM</strong> — Buffalo Trace</li>
+          <li><strong>10:20 AM</strong> — Larrikin</li>
+          <li><strong>10:50 AM</strong> — Wild Turkey</li>
+          <li><strong>12:00 PM</strong> — Limestone Branch</li>
+          <li><strong>1:25 PM</strong> — Maker's Mark</li>
+          <li><strong>4:45 PM</strong> — Angel's Envy Tour</li>
+          <li><strong>Evening</strong> — Malone's Louisville Summit Plaza</li>
+        </ul>
+
+      </div>
+
+    </section>
+
+    <section id="bourbon">
+
+      <h2>Bourbon Stops</h2>
+
+      <div class="cards">
+
+        <div class="card">
+          <h3>Buffalo Trace</h3>
+          <p>Frankfort, Kentucky</p>
+        </div>
+
+        <div class="card">
+          <h3>J. Mattingly 1845</h3>
+          <p>Frankfort, Kentucky</p>
+        </div>
+
+        <div class="card">
+          <h3>Glenn's Creek</h3>
+          <p>Millville, Kentucky</p>
+        </div>
+
+        <div class="card">
+          <h3>RD1 Spirits</h3>
+          <p>Lexington, Kentucky</p>
+        </div>
+
+        <div class="card">
+          <h3>Dark Arts Whiskey House</h3>
+          <p>Lexington, Kentucky</p>
+        </div>
+
+        <div class="card">
+          <h3>James E. Pepper</h3>
+          <p>Lexington, Kentucky</p>
+        </div>
+
+        <div class="card">
+          <h3>Willett</h3>
+          <p>Bardstown, Kentucky</p>
+        </div>
+
+        <div class="card">
+          <h3>Preservation</h3>
+          <p>Bardstown, Kentucky</p>
+        </div>
+
+        <div class="card">
+          <h3>Heaven Hill</h3>
+          <p>Bardstown, Kentucky</p>
+        </div>
+
+        <div class="card">
+          <h3>Bardstown Bourbon Company</h3>
+          <p>Bardstown, Kentucky</p>
+        </div>
+
+        <div class="card">
+          <h3>Jim Beam</h3>
+          <p>Clermont, Kentucky</p>
+        </div>
+
+        <div class="card">
+          <h3>Wild Turkey</h3>
+          <p>Lawrenceburg, Kentucky</p>
+        </div>
+
+        <div class="card">
+          <h3>Limestone Branch</h3>
+          <p>Lebanon, Kentucky</p>
+        </div>
+
+        <div class="card">
+          <h3>Maker's Mark</h3>
+          <p>Loretto, Kentucky</p>
+        </div>
+
+        <div class="card">
+          <h3>Angel's Envy</h3>
+          <p>Louisville, Kentucky</p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section id="stats">
+
+      <h2>Trip Stats</h2>
+
+      <div class="stats">
+
+        <div class="stat">
+          <strong>4</strong>
+          <span>Idiots</span>
+        </div>
+
+        <div class="stat">
+          <strong>3</strong>
+          <span>Days</span>
+        </div>
+
+        <div class="stat">
+          <strong>???</strong>
+          <span>Miles Driven</span>
+        </div>
+
+        <div class="stat">
+          <strong>???</strong>
+          <span>Distillery Stops</span>
+        </div>
+
+        <div class="stat">
+          <strong>???</strong>
+          <span>Bottles Bought</span>
+        </div>
+
+        <div class="stat">
+          <strong>$???</strong>
+          <span>Financial Damage</span>
+        </div>
+
+      </div>
+
+    </section>
+
+    <section id="quotes">
+
+      <h2>Things That Shouldn't Have Been Said</h2>
+
+      <div class="quote">
+        “There is absolutely enough room in the trunk for another case.”
+        <span>— Probably somebody, eventually</span>
+      </div>
+
+      <div class="quote">
+        “It's only twenty minutes out of the way.”
+        <span>— The beginning of every two-hour detour</span>
+      </div>
+
+      <div class="quote">
+        “I'm not buying another bottle.”
+        <span>— Man seen purchasing another bottle 14 minutes later</span>
+      </div>
+
+      <div class="quote">
+        “It smells like black in here.”
+        <span>— Brad</span>
+      </div>
+
+    </section>
+
+    <section id="photos">
+
+      <h2>Photographic Evidence</h2>
+
+      <div class="gallery-placeholder">
+        Trip photos will go here.<br><br>
+        Future evidence may be used against us.
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer>
+
+    <div class="footer-title">
+      Bourbon, Backroads &amp; Bad Decisions
+    </div>
+
+    <p>
+      A completely responsible Kentucky bourbon road trip.
+    </p>
+
+    <p style="margin-top:10px;">
+      © 2026 — No good judgment reserved.
+    </p>
+
+  </footer>
+
+  <script>
+
+    const tripDate =
+      new Date("2026-09-03T03:00:00-04:00");
+
+    function updateCountdown() {
+
+      const now = new Date();
+
+      const difference =
+        tripDate - now;
+
+      if (difference <= 0) {
+
+        document.querySelector(".countdown-label").textContent =
+          "THE BAD DECISIONS HAVE BEGUN";
+
+        document.getElementById("days").textContent = "00";
+        document.getElementById("hours").textContent = "00";
+        document.getElementById("minutes").textContent = "00";
+        document.getElementById("seconds").textContent = "00";
+
+        return;
+      }
+
+      const days =
+        Math.floor(
+          difference /
+          (1000 * 60 * 60 * 24)
+        );
+
+      const hours =
+        Math.floor(
+          (difference %
+          (1000 * 60 * 60 * 24)) /
+          (1000 * 60 * 60)
+        );
+
+      const minutes =
+        Math.floor(
+          (difference %
+          (1000 * 60 * 60)) /
+          (1000 * 60)
+        );
+
+      const seconds =
+        Math.floor(
+          (difference %
+          (1000 * 60)) /
+          1000
+        );
+
+      document.getElementById("days").textContent =
+        String(days).padStart(2, "0");
+
+      document.getElementById("hours").textContent =
+        String(hours).padStart(2, "0");
+
+      document.getElementById("minutes").textContent =
+        String(minutes).padStart(2, "0");
+
+      document.getElementById("seconds").textContent =
+        String(seconds).padStart(2, "0");
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+  </script>
+
+</body>
+</html>
