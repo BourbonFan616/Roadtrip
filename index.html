@@ -475,30 +475,33 @@
       margin-bottom: 15px;
     }
 
+    /* THUMBNAIL GALLERY */
+
     #photoGallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
     }
 
     .gallery-photo {
-      overflow: hidden;
       background: #15120f;
       border: 1px solid var(--border);
       border-top: 3px solid var(--amber);
+      padding: 8px;
     }
 
     .gallery-photo img {
       width: 100%;
-      height: 230px;
+      height: 180px;
       display: block;
-      object-fit: cover;
+      object-fit: contain;
+      background: #0b0b0b;
       cursor: pointer;
-      transition: transform 0.25s ease;
+      transition: transform 0.2s ease;
     }
 
     .gallery-photo img:hover {
-      transform: scale(1.025);
+      transform: scale(1.03);
     }
 
     .gallery-empty {
@@ -508,6 +511,83 @@
       text-align: center;
       font-family: Arial, sans-serif;
     }
+
+    /* LIGHTBOX */
+
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(0, 0, 0, 0.94);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .lightbox-inner {
+      width: 100%;
+      max-width: 1200px;
+      height: 100%;
+      max-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    #lightboxImage {
+      max-width: 100%;
+      max-height: 85vh;
+      object-fit: contain;
+      display: block;
+      border: 2px solid var(--amber);
+      background: #000;
+    }
+
+    .lightbox-button {
+      position: absolute;
+      background: rgba(20, 16, 13, 0.88);
+      color: var(--cream);
+      border: 2px solid var(--amber);
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10001;
+    }
+
+    .lightbox-button:hover {
+      background: var(--amber);
+      color: #111;
+    }
+
+    #lightboxClose {
+      top: 10px;
+      right: 10px;
+      width: 46px;
+      height: 46px;
+      font-size: 1.4rem;
+    }
+
+    #lightboxPrev {
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 50px;
+      height: 60px;
+      font-size: 1.8rem;
+    }
+
+    #lightboxNext {
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 50px;
+      height: 60px;
+      font-size: 1.8rem;
+    }
+
+    /* POPUPS */
 
     .popup-overlay {
       display: none;
@@ -620,6 +700,7 @@
     }
 
     @media (max-width: 700px) {
+
       header {
         min-height: 78vh;
       }
@@ -657,13 +738,25 @@
 
       #photoGallery {
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        gap: 8px;
       }
 
       .gallery-photo img {
-        height: 170px;
+        height: 140px;
+      }
+
+      #lightboxPrev,
+      #lightboxNext {
+        width: 42px;
+        height: 52px;
+        font-size: 1.4rem;
+      }
+
+      #lightboxImage {
+        max-height: 80vh;
       }
     }
+
   </style>
 </head>
 
@@ -681,10 +774,14 @@
     </nav>
   </div>
 
+
   <header>
+
     <div class="hero">
 
-      <div class="road-sign">Kentucky Bound</div>
+      <div class="road-sign">
+        Kentucky Bound
+      </div>
 
       <h1>
         Bourbon,<br>
@@ -733,11 +830,14 @@
       </div>
 
     </div>
+
   </header>
+
 
   <main>
 
     <section id="about">
+
       <h2>The Mission</h2>
 
       <p class="intro">
@@ -745,6 +845,7 @@
         questionable navigation decisions and the firm belief that scheduling
         this many distillery stops in one trip was somehow a good idea.
       </p>
+
     </section>
 
 
@@ -1214,6 +1315,50 @@
         </button>
 
       </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- LIGHTBOX -->
+
+  <div id="lightbox">
+
+    <div class="lightbox-inner">
+
+      <button
+        id="lightboxClose"
+        class="lightbox-button"
+        type="button"
+        aria-label="Close image"
+      >
+        ×
+      </button>
+
+      <button
+        id="lightboxPrev"
+        class="lightbox-button"
+        type="button"
+        aria-label="Previous image"
+      >
+        ‹
+      </button>
+
+      <img
+        id="lightboxImage"
+        src=""
+        alt="Full size trip photo"
+      >
+
+      <button
+        id="lightboxNext"
+        class="lightbox-button"
+        type="button"
+        aria-label="Next image"
+      >
+        ›
+      </button>
 
     </div>
 
@@ -1732,6 +1877,195 @@
 
 
     /* ============================
+       LIGHTBOX
+       ============================ */
+
+    const lightbox =
+      document.getElementById("lightbox");
+
+
+    const lightboxImage =
+      document.getElementById("lightboxImage");
+
+
+    const lightboxClose =
+      document.getElementById("lightboxClose");
+
+
+    const lightboxPrev =
+      document.getElementById("lightboxPrev");
+
+
+    const lightboxNext =
+      document.getElementById("lightboxNext");
+
+
+    let galleryImages = [];
+
+    let currentImageIndex = 0;
+
+
+    function openLightbox(index) {
+
+      if (
+        galleryImages.length === 0
+      ) {
+
+        return;
+
+      }
+
+
+      currentImageIndex =
+        index;
+
+
+      lightboxImage.src =
+        galleryImages[
+          currentImageIndex
+        ];
+
+
+      lightbox.style.display =
+        "flex";
+
+
+      document.body.style.overflow =
+        "hidden";
+
+    }
+
+
+    function closeLightbox() {
+
+      lightbox.style.display =
+        "none";
+
+
+      lightboxImage.src =
+        "";
+
+
+      document.body.style.overflow =
+        "";
+
+    }
+
+
+    function showNextImage() {
+
+      currentImageIndex =
+        (
+          currentImageIndex + 1
+        )
+        % galleryImages.length;
+
+
+      lightboxImage.src =
+        galleryImages[
+          currentImageIndex
+        ];
+
+    }
+
+
+    function showPreviousImage() {
+
+      currentImageIndex =
+        (
+          currentImageIndex
+          - 1
+          + galleryImages.length
+        )
+        % galleryImages.length;
+
+
+      lightboxImage.src =
+        galleryImages[
+          currentImageIndex
+        ];
+
+    }
+
+
+    lightboxClose.addEventListener(
+      "click",
+      closeLightbox
+    );
+
+
+    lightboxNext.addEventListener(
+      "click",
+      showNextImage
+    );
+
+
+    lightboxPrev.addEventListener(
+      "click",
+      showPreviousImage
+    );
+
+
+    lightbox.addEventListener(
+      "click",
+      function(event) {
+
+        if (
+          event.target === lightbox
+        ) {
+
+          closeLightbox();
+
+        }
+
+      }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (
+          lightbox.style.display !== "flex"
+        ) {
+
+          return;
+
+        }
+
+
+        if (
+          event.key === "Escape"
+        ) {
+
+          closeLightbox();
+
+        }
+
+
+        if (
+          event.key === "ArrowRight"
+        ) {
+
+          showNextImage();
+
+        }
+
+
+        if (
+          event.key === "ArrowLeft"
+        ) {
+
+          showPreviousImage();
+
+        }
+
+      }
+    );
+
+
+    /* ============================
        PHOTO GALLERY
        ============================ */
 
@@ -1759,6 +2093,10 @@
 
       photoGallery.innerHTML =
         "";
+
+
+      galleryImages =
+        [];
 
 
       try {
@@ -1854,6 +2192,7 @@
             + '</div>';
 
           return;
+
         }
 
 
@@ -1872,6 +2211,15 @@
               + encodeURIComponent(
                   file.name
                 );
+
+
+            galleryImages.push(
+              publicUrl
+            );
+
+
+            const imageIndex =
+              galleryImages.length - 1;
 
 
             const card =
@@ -1906,9 +2254,8 @@
               "click",
               function() {
 
-                window.open(
-                  publicUrl,
-                  "_blank"
+                openLightbox(
+                  imageIndex
                 );
 
               }
