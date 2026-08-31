@@ -1639,15 +1639,6 @@
     );
 
 
-    if (
-      sessionStorage.getItem(
-        "bourbonPhotosUnlocked"
-      ) === "yes"
-    ) {
-
-      unlockPhotoArea();
-
-    }
 
 
     /* ============================
@@ -2295,7 +2286,37 @@
       }
 
     }
+    }
 
+  }
+
+
+  /* ============================
+     RESTORE PHOTO ACCESS
+     AFTER PAGE IS READY
+     ============================ */
+
+  window.addEventListener(
+    "load",
+    function() {
+
+      if (
+        sessionStorage.getItem(
+          "bourbonPhotosUnlocked"
+        ) === "yes"
+      ) {
+
+        unlockPhotoArea();
+
+      }
+
+    }
+  );
+
+</script>
+
+</body>
+</html>
   </script>
 
 </body>
