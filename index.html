@@ -17,7 +17,6 @@
       --muted: #b7aa9a;
       --border: #4a3828;
       --danger: #9e3b2f;
-      --success: #56834d;
     }
 
     * {
@@ -33,10 +32,7 @@
     body {
       font-family: Georgia, "Times New Roman", serif;
       background:
-        linear-gradient(
-          rgba(17,17,17,0.94),
-          rgba(17,17,17,0.96)
-        ),
+        linear-gradient(rgba(17,17,17,0.94), rgba(17,17,17,0.96)),
         repeating-linear-gradient(
           90deg,
           #1a1410 0px,
@@ -220,24 +216,17 @@
 
     .cards {
       display: grid;
-      grid-template-columns:
-        repeat(auto-fit, minmax(230px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 20px;
       margin-top: 25px;
     }
 
     .card {
-      background:
-        linear-gradient(
-          145deg,
-          #251e18,
-          #181512
-        );
+      background: linear-gradient(145deg, #251e18, #181512);
       border: 1px solid var(--border);
       border-top: 4px solid var(--amber);
       padding: 22px;
-      box-shadow:
-        0 8px 18px rgba(0,0,0,0.3);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.3);
     }
 
     .card h3 {
@@ -263,8 +252,7 @@
     .day {
       margin-top: 30px;
       border-left: 4px solid var(--amber);
-      background:
-        rgba(30,25,20,0.8);
+      background: rgba(30,25,20,0.8);
       padding: 24px 28px;
     }
 
@@ -307,8 +295,7 @@
       display: block;
       border: 2px solid var(--border);
       border-top: 4px solid var(--amber);
-      box-shadow:
-        0 8px 18px rgba(0,0,0,0.35);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.35);
     }
 
     .image-caption {
@@ -322,8 +309,7 @@
 
     .stats {
       display: grid;
-      grid-template-columns:
-        repeat(auto-fit, minmax(160px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 15px;
       margin-top: 25px;
     }
@@ -367,36 +353,39 @@
       margin-top: 8px;
     }
 
-    .photo-lock {
-      background:
-        linear-gradient(
-          145deg,
-          #251e18,
-          #16120f
-        );
+    .photo-lock,
+    .upload-panel {
+      background: linear-gradient(145deg, #251e18, #16120f);
       border: 1px solid var(--border);
       border-top: 4px solid var(--amber);
+      padding: 25px;
+    }
+
+    .photo-lock {
       max-width: 600px;
-      padding: 30px;
       margin-top: 25px;
       text-align: center;
     }
 
-    .photo-lock h3 {
+    .photo-lock h3,
+    .upload-panel h3,
+    .gallery-title {
       color: var(--gold);
       font-size: 1.5rem;
-      margin-bottom: 8px;
     }
 
-    .photo-lock p {
+    .photo-lock p,
+    .upload-panel p {
       color: var(--muted);
       margin-bottom: 20px;
     }
 
-    .pin-row {
+    .pin-row,
+    .upload-controls {
       display: flex;
+      align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
     }
 
@@ -441,12 +430,27 @@
       cursor: wait;
     }
 
-    .pin-message {
+    .pin-message,
+    .upload-status,
+    .gallery-loading {
+      margin-top: 14px;
       min-height: 24px;
-      margin-top: 12px;
       font-family: Arial, sans-serif;
       font-size: 0.9rem;
+      color: var(--muted);
+      overflow-wrap: anywhere;
+    }
+
+    .pin-message {
       color: #d66b5d;
+    }
+
+    .upload-status.success {
+      color: #8ec983;
+    }
+
+    .upload-status.error {
+      color: #e27969;
     }
 
     #photoArea {
@@ -454,34 +458,7 @@
     }
 
     .upload-panel {
-      background:
-        linear-gradient(
-          145deg,
-          #251e18,
-          #16120f
-        );
-      border: 1px solid var(--border);
-      border-top: 4px solid var(--amber);
-      padding: 25px;
       margin-bottom: 30px;
-    }
-
-    .upload-panel h3 {
-      color: var(--gold);
-      font-size: 1.5rem;
-      margin-bottom: 5px;
-    }
-
-    .upload-panel p {
-      color: var(--muted);
-      margin-bottom: 20px;
-    }
-
-    .upload-controls {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
     }
 
     #photoFile {
@@ -493,45 +470,14 @@
       padding: 10px;
     }
 
-    .upload-status {
-      margin-top: 14px;
-      min-height: 24px;
-      font-family: Arial, sans-serif;
-      font-size: 0.9rem;
-      color: var(--muted);
-      overflow-wrap: anywhere;
-    }
-
-    .upload-status.success {
-      color: #8ec983;
-    }
-
-    .upload-status.error {
-      color: #e27969;
-    }
-
-    .diagnostic-area {
-      margin-top: 22px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-    }
-
-    .diagnostic-area p {
-      margin-bottom: 10px;
-      font-size: 0.9rem;
-    }
-
     .gallery-title {
       margin-top: 20px;
       margin-bottom: 15px;
-      color: var(--gold);
-      font-size: 1.5rem;
     }
 
     #photoGallery {
       display: grid;
-      grid-template-columns:
-        repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 18px;
     }
 
@@ -553,12 +499,6 @@
 
     .gallery-photo img:hover {
       transform: scale(1.025);
-    }
-
-    .gallery-loading {
-      color: var(--muted);
-      font-family: Arial, sans-serif;
-      padding: 15px 0;
     }
 
     .gallery-empty {
@@ -583,33 +523,28 @@
     .popup-box {
       width: 100%;
       max-width: 500px;
-      background:
-        linear-gradient(
-          145deg,
-          #2a2119,
-          #15110e
-        );
+      background: linear-gradient(145deg, #2a2119, #15110e);
       border: 2px solid var(--amber);
       border-top: 6px solid var(--gold);
       padding: 35px 30px;
       text-align: center;
-      box-shadow:
-        0 15px 50px rgba(0,0,0,0.8);
+      box-shadow: 0 15px 50px rgba(0,0,0,0.8);
     }
 
     .promise-box {
       position: relative;
       overflow: hidden;
+
       background:
-        linear-gradient(
-          rgba(10,8,6,0.58),
-          rgba(10,8,6,0.78)
-        ),
+        linear-gradient(rgba(10,8,6,0.58), rgba(10,8,6,0.78)),
         url("popup image.jpg");
+
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
+
       min-height: 360px;
+
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -667,10 +602,6 @@
       color: white;
     }
 
-    .brad-box h2 {
-      font-size: 2.2rem;
-    }
-
     footer {
       text-align: center;
       padding: 40px 20px;
@@ -725,8 +656,7 @@
       }
 
       #photoGallery {
-        grid-template-columns:
-          repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 10px;
       }
 
@@ -751,14 +681,10 @@
     </nav>
   </div>
 
-
   <header>
-
     <div class="hero">
 
-      <div class="road-sign">
-        Kentucky Bound
-      </div>
+      <div class="road-sign">Kentucky Bound</div>
 
       <h1>
         Bourbon,<br>
@@ -804,18 +730,14 @@
           </div>
 
         </div>
-
       </div>
 
     </div>
-
   </header>
-
 
   <main>
 
     <section id="about">
-
       <h2>The Mission</h2>
 
       <p class="intro">
@@ -823,7 +745,6 @@
         questionable navigation decisions and the firm belief that scheduling
         this many distillery stops in one trip was somehow a good idea.
       </p>
-
     </section>
 
 
@@ -1194,30 +1115,6 @@
             class="upload-status"
           ></div>
 
-
-          <!-- SUPABASE DIAGNOSTIC -->
-
-          <div class="diagnostic-area">
-
-            <p>
-              Having trouble uploading? Test the connection to the evidence server.
-            </p>
-
-            <button
-              id="testSupabase"
-              class="site-button"
-              type="button"
-            >
-              Test Supabase Connection
-            </button>
-
-            <div
-              id="supabaseTestResult"
-              class="upload-status"
-            ></div>
-
-          </div>
-
         </div>
 
 
@@ -1258,7 +1155,7 @@
   </footer>
 
 
-  <!-- PROMISE POPUP -->
+  <!-- FIRST POPUP -->
 
   <div
     id="promisePopup"
@@ -1301,7 +1198,7 @@
     class="popup-overlay"
   >
 
-    <div class="popup-box brad-box">
+    <div class="popup-box">
 
       <h2>
         It smells like black in here
@@ -1323,24 +1220,21 @@
   </div>
 
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
   <script>
 
-    /* ================================
+    /* ============================
        COUNTDOWN
-       ================================ */
+       ============================ */
 
     const tripDate =
       new Date("2026-09-03T03:00:00-04:00");
 
+
     function updateCountdown() {
 
-      const now = new Date();
-
       const difference =
-        tripDate - now;
+        tripDate - new Date();
+
 
       if (difference <= 0) {
 
@@ -1348,6 +1242,7 @@
           .querySelector(".countdown-label")
           .textContent =
           "THE BAD DECISIONS HAVE BEGUN";
+
 
         document.getElementById("days").textContent =
           "00";
@@ -1364,11 +1259,13 @@
         return;
       }
 
+
       const days =
         Math.floor(
           difference /
           (1000 * 60 * 60 * 24)
         );
+
 
       const hours =
         Math.floor(
@@ -1377,12 +1274,14 @@
           (1000 * 60 * 60)
         );
 
+
       const minutes =
         Math.floor(
           (difference %
           (1000 * 60 * 60)) /
           (1000 * 60)
         );
+
 
       const seconds =
         Math.floor(
@@ -1391,19 +1290,24 @@
           1000
         );
 
+
       document.getElementById("days").textContent =
         String(days).padStart(2, "0");
+
 
       document.getElementById("hours").textContent =
         String(hours).padStart(2, "0");
 
+
       document.getElementById("minutes").textContent =
         String(minutes).padStart(2, "0");
+
 
       document.getElementById("seconds").textContent =
         String(seconds).padStart(2, "0");
 
     }
+
 
     updateCountdown();
 
@@ -1413,9 +1317,9 @@
     );
 
 
-    /* ================================
-       PROMISE POPUPS
-       ================================ */
+    /* ============================
+       POPUPS
+       ============================ */
 
     const promisePopup =
       document.getElementById("promisePopup");
@@ -1423,98 +1327,95 @@
     const bradPopup =
       document.getElementById("bradPopup");
 
-    const promiseYes =
-      document.getElementById("promiseYes");
 
-    const promiseBrad =
-      document.getElementById("promiseBrad");
-
-    const bradOk =
-      document.getElementById("bradOk");
-
-
-    setTimeout(function() {
-
-      promisePopup.style.display =
-        "flex";
-
-    }, 3000);
-
-
-    promiseYes.addEventListener(
-      "click",
+    setTimeout(
       function() {
 
         promisePopup.style.display =
-          "none";
-
-      }
-    );
-
-
-    promiseBrad.addEventListener(
-      "click",
-      function() {
-
-        promisePopup.style.display =
-          "none";
-
-        bradPopup.style.display =
           "flex";
 
-      }
+      },
+      3000
     );
 
 
-    bradOk.addEventListener(
-      "click",
-      function() {
+    document
+      .getElementById("promiseYes")
+      .addEventListener(
+        "click",
+        function() {
 
-        bradPopup.style.display =
-          "none";
+          promisePopup.style.display =
+            "none";
 
-      }
-    );
+        }
+      );
 
 
-    /* ================================
-       SUPABASE CONFIG
-       ================================ */
+    document
+      .getElementById("promiseBrad")
+      .addEventListener(
+        "click",
+        function() {
+
+          promisePopup.style.display =
+            "none";
+
+          bradPopup.style.display =
+            "flex";
+
+        }
+      );
+
+
+    document
+      .getElementById("bradOk")
+      .addEventListener(
+        "click",
+        function() {
+
+          bradPopup.style.display =
+            "none";
+
+        }
+      );
+
+
+    /* ============================
+       SUPABASE SETTINGS
+       ============================ */
 
     const SUPABASE_URL =
       "https://wkpxdkqtdousriavhfjk.supabase.co";
 
+
     const SUPABASE_KEY =
       "sb_publishable_rL4Rcn5do00vayBB3weK-A_LehQS_Ud";
+
 
     const STORAGE_BUCKET =
       "trip-photos";
 
-    const supabaseClient =
-      supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-      );
 
-
-    /* ================================
+    /* ============================
        PHOTO PIN
-       ================================ */
+       ============================ */
 
     const TRIP_PIN =
       "0926";
 
+
     const photoLock =
       document.getElementById("photoLock");
+
 
     const photoArea =
       document.getElementById("photoArea");
 
+
     const photoPin =
       document.getElementById("photoPin");
 
-    const unlockPhotos =
-      document.getElementById("unlockPhotos");
 
     const pinMessage =
       document.getElementById("pinMessage");
@@ -1525,13 +1426,16 @@
       photoLock.style.display =
         "none";
 
+
       photoArea.style.display =
         "block";
+
 
       sessionStorage.setItem(
         "bourbonPhotosUnlocked",
         "yes"
       );
+
 
       loadGallery();
 
@@ -1540,7 +1444,9 @@
 
     function checkPin() {
 
-      if (photoPin.value === TRIP_PIN) {
+      if (
+        photoPin.value === TRIP_PIN
+      ) {
 
         pinMessage.textContent =
           "";
@@ -1564,18 +1470,24 @@
     }
 
 
-    unlockPhotos.addEventListener(
-      "click",
-      checkPin
-    );
+    document
+      .getElementById("unlockPhotos")
+      .addEventListener(
+        "click",
+        checkPin
+      );
 
 
     photoPin.addEventListener(
       "keydown",
       function(event) {
 
-        if (event.key === "Enter") {
+        if (
+          event.key === "Enter"
+        ) {
+
           checkPin();
+
         }
 
       }
@@ -1593,18 +1505,21 @@
     }
 
 
-    /* ================================
+    /* ============================
        PHOTO UPLOAD
-       ================================ */
+       ============================ */
 
     const photoFile =
       document.getElementById("photoFile");
 
+
     const uploadPhoto =
       document.getElementById("uploadPhoto");
 
+
     const uploadStatus =
       document.getElementById("uploadStatus");
+
 
     const MAX_FILE_SIZE =
       10 * 1024 * 1024;
@@ -1616,6 +1531,7 @@
 
         const file =
           photoFile.files[0];
+
 
         uploadStatus.className =
           "upload-status";
@@ -1634,7 +1550,9 @@
         }
 
 
-        if (!file.type.startsWith("image/")) {
+        if (
+          !file.type.startsWith("image/")
+        ) {
 
           uploadStatus.textContent =
             "Only image files are allowed.";
@@ -1647,7 +1565,9 @@
         }
 
 
-        if (file.size > MAX_FILE_SIZE) {
+        if (
+          file.size > MAX_FILE_SIZE
+        ) {
 
           uploadStatus.textContent =
             "That photo is larger than 10 MB.";
@@ -1663,18 +1583,16 @@
         uploadPhoto.disabled =
           true;
 
+
         uploadPhoto.textContent =
           "Uploading...";
 
+
         uploadStatus.textContent =
-          "Preparing photographic evidence...";
+          "Sending photographic evidence...";
 
 
         try {
-
-          const fileBuffer =
-            await file.arrayBuffer();
-
 
           const originalExtension =
             file.name.includes(".")
@@ -1698,65 +1616,82 @@
             );
 
 
-          const randomPart =
-            Math.random()
-              .toString(36)
-              .substring(2,10);
-
-
           const fileName =
             Date.now()
             + "-"
-            + randomPart
+            + Math.random()
+                .toString(36)
+                .substring(2,10)
             + "."
             + extension;
 
 
-          uploadStatus.textContent =
-            "Sending photographic evidence...";
+          const uploadUrl =
+            SUPABASE_URL
+            + "/storage/v1/object/"
+            + STORAGE_BUCKET
+            + "/"
+            + encodeURIComponent(fileName);
 
 
-          const {
-            data,
-            error
-          } =
-            await supabaseClient
-              .storage
-              .from(STORAGE_BUCKET)
-              .upload(
-                fileName,
-                fileBuffer,
-                {
-                  contentType:
+          const response =
+            await fetch(
+              uploadUrl,
+              {
+                method: "POST",
+
+                headers: {
+
+                  "apikey":
+                    SUPABASE_KEY,
+
+                  "Content-Type":
                     file.type || "image/jpeg",
 
-                  cacheControl:
-                    "3600",
+                  "x-upsert":
+                    "false"
 
-                  upsert:
-                    false
-                }
-              );
+                },
+
+                body:
+                  file
+              }
+            );
 
 
-          if (error) {
-            throw error;
+          const responseText =
+            await response.text();
+
+
+          if (!response.ok) {
+
+            throw new Error(
+              "HTTP "
+              + response.status
+              + ": "
+              + responseText
+            );
+
           }
 
 
           uploadStatus.textContent =
             "Evidence successfully submitted.";
 
+
           uploadStatus.classList.add(
             "success"
           );
 
+
           photoFile.value =
             "";
+
 
           await loadGallery();
 
         }
+
 
         catch (error) {
 
@@ -1765,6 +1700,7 @@
             error
           );
 
+
           uploadStatus.textContent =
             "Upload failed: "
             + (
@@ -1772,16 +1708,19 @@
               "Unknown upload error"
             );
 
+
           uploadStatus.classList.add(
             "error"
           );
 
         }
 
+
         finally {
 
           uploadPhoto.disabled =
             false;
+
 
           uploadPhoto.textContent =
             "Upload Photo";
@@ -1792,83 +1731,224 @@
     );
 
 
-    /* ================================
-       SUPABASE CONNECTION TEST
-       ================================ */
+    /* ============================
+       PHOTO GALLERY
+       ============================ */
 
-  testSupabase.addEventListener(
-  "click",
-  async function() {
+    const photoGallery =
+      document.getElementById(
+        "photoGallery"
+      );
 
-    supabaseTestResult.className =
-      "upload-status";
 
-    supabaseTestResult.textContent =
-      "Testing Supabase Storage...";
+    const galleryStatus =
+      document.getElementById(
+        "galleryStatus"
+      );
 
-    testSupabase.disabled =
-      true;
 
-    try {
+    async function loadGallery() {
 
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .storage
-          .from(STORAGE_BUCKET)
-          .list(
-            "",
+      galleryStatus.style.display =
+        "block";
+
+
+      galleryStatus.textContent =
+        "Loading photographic evidence...";
+
+
+      photoGallery.innerHTML =
+        "";
+
+
+      try {
+
+        const listUrl =
+          SUPABASE_URL
+          + "/storage/v1/object/list/"
+          + STORAGE_BUCKET;
+
+
+        const response =
+          await fetch(
+            listUrl,
             {
-              limit: 1
+              method:
+                "POST",
+
+              headers: {
+
+                "apikey":
+                  SUPABASE_KEY,
+
+                "Content-Type":
+                  "application/json"
+
+              },
+
+              body:
+                JSON.stringify(
+                  {
+                    prefix: "",
+                    limit: 200,
+                    offset: 0,
+
+                    sortBy: {
+                      column: "created_at",
+                      order: "desc"
+                    }
+                  }
+                )
             }
           );
 
-      if (error) {
 
-        throw error;
+        const responseText =
+          await response.text();
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            "HTTP "
+            + response.status
+            + ": "
+            + responseText
+          );
+
+        }
+
+
+        const files =
+          JSON.parse(
+            responseText
+          );
+
+
+        const imageFiles =
+          files.filter(
+            function(file) {
+
+              return (
+                file.name &&
+                !file.name.startsWith(".")
+              );
+
+            }
+          );
+
+
+        if (
+          imageFiles.length === 0
+        ) {
+
+          galleryStatus.style.display =
+            "none";
+
+
+          photoGallery.innerHTML =
+            '<div class="gallery-empty">'
+            + 'No photographic evidence has been submitted yet.'
+            + '<br><br>'
+            + 'Be the first to create evidence.'
+            + '</div>';
+
+          return;
+        }
+
+
+        galleryStatus.style.display =
+          "none";
+
+
+        imageFiles.forEach(
+          function(file) {
+
+            const publicUrl =
+              SUPABASE_URL
+              + "/storage/v1/object/public/"
+              + STORAGE_BUCKET
+              + "/"
+              + encodeURIComponent(
+                  file.name
+                );
+
+
+            const card =
+              document.createElement(
+                "div"
+              );
+
+
+            card.className =
+              "gallery-photo";
+
+
+            const image =
+              document.createElement(
+                "img"
+              );
+
+
+            image.src =
+              publicUrl;
+
+
+            image.alt =
+              "Kentucky bourbon trip photo";
+
+
+            image.loading =
+              "lazy";
+
+
+            image.addEventListener(
+              "click",
+              function() {
+
+                window.open(
+                  publicUrl,
+                  "_blank"
+                );
+
+              }
+            );
+
+
+            card.appendChild(
+              image
+            );
+
+
+            photoGallery.appendChild(
+              card
+            );
+
+          }
+        );
 
       }
 
-      supabaseTestResult.textContent =
-        "SUCCESS — Neocities can reach Supabase Storage.";
 
-      supabaseTestResult.classList.add(
-        "success"
-      );
+      catch (error) {
 
-    }
-
-    catch (error) {
-
-      supabaseTestResult.textContent =
-        "Supabase test failed: "
-        + (
-          error.message ||
-          "Unknown error"
+        console.error(
+          "Gallery error:",
+          error
         );
 
-      supabaseTestResult.classList.add(
-        "error"
-      );
 
-      console.error(
-        "Supabase connection test:",
-        error
-      );
+        galleryStatus.textContent =
+          "Could not load the evidence: "
+          + (
+            error.message ||
+            "Unknown gallery error"
+          );
 
-    }
-
-    finally {
-
-      testSupabase.disabled =
-        false;
+      }
 
     }
 
-  }
-);
   </script>
 
 </body>
